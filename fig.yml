@@ -1,0 +1,13 @@
+local:
+  build: .
+  privileged: true
+  ports:
+    - '8080'
+  volumes:
+    - ./data:/var/jenkins_home
+  environment:
+    VIRTUAL_PORT: 8080
+    VIRTUAL_HOST: builder.local.dockito.com.br
+    # DOCKER_REGISTRY_USER: user
+    # DOCKER_REGISTRY_PASSWORD: password
+    # DOCKER_REGISTRY: https://docker.dockito.com.br/v1/
