@@ -1,4 +1,4 @@
-FROM jenkins:1.585
+FROM jenkins:1.596.2
 
 USER root
 
@@ -18,16 +18,6 @@ ENV DOCKER_HOST unix:///tmp/docker.sock
 # === installs fig.sh ===
 
 RUN curl -L https://github.com/docker/fig/releases/download/1.0.1/fig-`uname -s`-`uname -m` > /usr/local/bin/fig; chmod +x /usr/local/bin/fig
-
-# === fixes TTY Jenkins issue ===
-
-# Patches dockerpy to fix TTY logs
-# the fix: https://github.com/d11wtq/dockerpty/pull/6
-# dockerpty bug: https://github.com/d11wtq/dockerpty/issues/4
-# fig bug: https://github.com/docker/fig/issues/199
-RUN rm -rf /usr/local/lib/python2.7/dist-packages/dockerpty
-ADD dockerpty-patch /usr/local/lib/python2.7/dist-packages/dockerpty
-RUN fig --version
 
 # === boot up jenkins ===
 
