@@ -1,26 +1,21 @@
 # Dockito Builder
 
-Docker Image to with [Jenkins](http://jenkins-ci.org/), [fig.yml](http://fig.sh/) and [Docker](http://docker.io/).
+Docker Image to with [Jenkins](http://jenkins-ci.org/) and [docker-compose](https://github.com/docker/compose).
+
+It uses the host's Docker daemon to start containers to run the builds/tests.
 
 ## Usage
 
 ```bash
-docker run -p 8080:8080 --privileged -v /your/home:/var/jenkins_home dockito/builder
+docker run -p 8080:8080 -v /your/home:/var/jenkins_home -v /var/run/docker.sock:/tmp/docker.sock dockito/builder
 ```
-
-## Configuration
-
-To authenticate in a private Docker registry:
-
-- `DOCKER_REGISTRY_USER`: admin
-- `DOCKER_REGISTRY_PASSWORD`: 123
-- `DOCKER_REGISTRY`: https://docker.dockito.com.br/v1/
 
 ## Recommended plugins
 
 * [AnsiColor Plugin](https://wiki.jenkins-ci.org/display/JENKINS/AnsiColor+Plugin);
 * [Git Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin);
-* [Managed Scripts](https://wiki.jenkins-ci.org/display/JENKINS/Managed+Script+Plugin).
+* [Managed Scripts](https://wiki.jenkins-ci.org/display/JENKINS/Managed+Script+Plugin);
+* [Multi-Branch Project Plugin](https://github.com/mjdetullio/multi-branch-project-plugin).
 
 ## Known issues
 
@@ -30,4 +25,3 @@ To authenticate in a private Docker registry:
 ## Acknowledgments
 
 * [Jenkins Image](https://github.com/cloudbees/jenkins-ci.org-docker);
-* [Docker in Docker (Dind)](https://github.com/jpetazzo/dind).

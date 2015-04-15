@@ -2,21 +2,18 @@ FROM jenkins:1.585
 
 USER root
 
-# force full apt-get update
-RUN rm -rf /var/lib/apt/lists/ && apt-get -q -y update
-
 # === installs docker ===
 
-RUN apt-get install -y apt-transport-https
+# Install docker client
+RUN apt-get update && apt-get install -y aufs-tools ca-certificates curl git iptables xz-utils
 
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
-RUN sh -c "echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
-RUN apt-get -q -y update
-RUN apt-get -q -y install lxc-docker-1.2.0
-RUN echo 'DOCKER_OPTS="-H :2375 -H unix:///var/run/docker.sock"' >> /etc/default/docker
-VOLUME /var/lib/docker
-EXPOSE 2375
+ENV DOCKER_VERSION 1.5.0
+
+RUN curl -SL https://get.docker.io/builds/Linux/x86_64/docker-$DOCKER_VERSION -o /usr/bin/docker \
+    && chmod +x /usr/bin/docker
+
+# Uses the docker socket shared from the host machine
+ENV DOCKER_HOST unix:///tmp/docker.sock
 
 # === installs fig.sh ===
 
@@ -33,9 +30,6 @@ ADD dockerpty-patch /usr/local/lib/python2.7/dist-packages/dockerpty
 RUN fig --version
 
 # === boot up jenkins ===
-
-COPY wrapdocker.sh /wrapdocker.sh
-RUN chmod +x /wrapdocker.sh
 
 COPY boot.sh /boot.sh
 RUN chmod +x /boot.sh
