@@ -1,4 +1,4 @@
-FROM jenkins:1.596.2
+FROM jenkins:1.585
 
 USER root
 
